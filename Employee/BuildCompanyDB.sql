@@ -1,3 +1,34 @@
+Skip to content
+Search or jump to…
+
+Pulls
+Issues
+Marketplace
+Explore
+ 
+@shaynedarak 
+shaynedarak
+/
+CSIS1410
+Private
+1
+00
+Code
+Issues
+Pull requests
+Actions
+Projects
+Security
+Insights
+Settings
+CSIS1410/Employee/BuildCompanyDB.sql
+@shaynedarak
+shaynedarak Add files via upload
+Latest commit 9870d5d 4 minutes ago
+ History
+ 1 contributor
+93 lines (84 sloc)  6.39 KB
+  
 -- ------------------------------------------------------------------------------------------------------------------------------
 -- BuildCompanyDB.sql
 --
@@ -91,3 +122,15 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- ------------------------------------------------------------------------------------------------------------------------------
 -- Done
 -- ------------------------------------------------------------------------------------------------------------------------------
+© 2020 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Help
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
