@@ -1,8 +1,12 @@
+import java.sql.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.io.BufferedReader;
 
 public class Employee {
@@ -17,18 +21,12 @@ public class Employee {
 	int supervisor_id;
 	String supervisorName;
 	
-	public Employee(int employeeID)
-	{
+	String connectionString = "jdbc:mysql://127.0.0.1.3306/company";
+	String dbLogin = "javauser";
+	String dbPassword = "j4v4us3r?";
+
+	public Employee(int employeeID) {
 		this.employeeID = employeeID;
-	}
-
-
-	public int getSupervisor_id() {
-		return supervisor_id;
-	}
-
-	public void setSupervisor_id(int supervisor_id) {
-		this.supervisor_id = supervisor_id;
 	}
 
 	public String getFirstName() {
@@ -63,10 +61,6 @@ public class Employee {
 		this.title = title;
 	}
 
-	private void setSalary(double salary) {
-		this.salary = salary;
-	}
-
 	public String getStatus() {
 		return status;
 	}
@@ -75,16 +69,70 @@ public class Employee {
 		this.status = status;
 	}
 
-	public int getEmployeeID() {
-		return employeeID;
+	public void getEmployee()
+	{
+		Connection conn = null;
+		String sql = "SELECT employee_id, first_name, last_name, age, title, salary,"
+				+ "status, supervisor_id, bonus, department, insurance, hiredate,"
+				+ "phone From employee WHERE employee_id = " + this.employeeID + ",";
+		try
+		{
+			conn = DriverManager.getConnection(connectionString, dbLogin, dbPassword);
+			if (conn !=null)
+			{
+				try (Statement stmt = conn.createStatement();
+						ResultSet rs = stmt.executeQuery(sql))
+				{
+					if (rs.next())
+					{
+						this.setEmployeeID(Integer.parseInt(rs.getString("employeeID")));
+						this.setFirstName(rs.getString("first_name"));
+						this.setLastName(rs.getString("last_name"));
+						this.setAge(Integer.parseInt(rs.getString("age"));
+						this.setTitle(rs.getString("title"));
+						this.setSalary(Double.parseDouble(rs.getString("salary"));
+						this.setStatus(rs.getString("status"));
+						this.setSupervisor_id(Integer.parseInt(rs.getString("supervisor_id"));
+						this.setBonus(Integer.parseInt(rs.getString("bonus"));
+						this.setDepartment(rs.getString("department"));
+						this.setInsurance(Integer.parseInt(rs.getString("insurance"));
+						this.setHireDate(rs.getString("hiredate"));
+						this.setPhone(rs.getString("phone"));
+				
+					}
+				}
+				
+				catch (SQLException ex)
+				{
+					System.out.print("SQLException: ");
+					System.out.println(ex.getMessage());
+				}
+			}
+		}
 	}
+	
+//	private void setSalary(double salary) {
+//		this.salary = salary;
+//	}
+//
+//	public int getSupervisor_id() {
+//		return supervisor_id;
+//	}
+//
+//	public void setSupervisor_id(int supervisor_id) {
+//		this.supervisor_id = supervisor_id;
+//	}
+//
+//	public int getEmployeeID() {
+//		return employeeID;
+//	}
+//
+//	public void setEmployeeID(int employeeID) {
+//		this.employeeID = employeeID;
+//	}
 
-	public void setEmployeeID(int employeeID) {
-		this.employeeID = employeeID;
-	}
-
-	public void getEmployee() throws NumberFormatException, IOException{
-		File fileName = new File("C:\\Users\\chane\\eclipse-workspace\\Week 6\\src\\EmployeeData.csv");
+	public void getEmployee() throws FileNotFoundException, IOException {
+		File fileName = new File("C:\\Data\\EmployeeData.csv");
 
 		if (fileName.exists()) {
 			BufferedReader br = null;
@@ -102,16 +150,15 @@ public class Employee {
 					this.setLastName(employeeRecord[2]);
 					this.setAge(Integer.parseInt(employeeRecord[3]));
 					this.setTitle(employeeRecord[4]);
-					this.setSalary(Double.parseDouble(employeeRecord[5]));
-					this.setStatus(employeeRecord[6]);
-					this.setSupervisor_id(Integer.parseInt(employeeRecord[7]));
+					this.setStatus(employeeRecord[5]);
+//					this.setSalary(Double.parseDouble(employeeRecord[6]));
+//					this.setSupervisor_id(Integer.parseInt(employeeRecord[7]));
 //					this.setBonus(Integer.parseInt(employeeRecord[8]));
 //					this.setDepartment(employeeRecord[9]);
 //					this.setInsurance(Integer.parseInt(employeeRecord[10]));
 //					this.setHireDate(employeeRecord[11]);
 //					this.setPhone(employeeRecord[12]);
 					break;
-				
 
 				}
 			}
@@ -127,7 +174,7 @@ public class Employee {
 	}
 
 	public void printEmployee() {
-	
+
 		System.out.println("Employee ID:\t " + this.employeeID);
 		System.out.println("Name:\t " + this.firstName + " " + this.lastName);
 		System.out.println("Age:\t " + this.age);
