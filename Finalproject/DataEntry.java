@@ -1,10 +1,4 @@
 
-// Thongleup Boundarak
-// Data Entry Form
-// Version: 1.0
-// 2020
-
-
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
