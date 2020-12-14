@@ -20,6 +20,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.*;
+import java.nio.file.Paths;
 import java.util.Scanner;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -27,6 +29,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextArea;
+import javax.swing.table.TableModel;
 
 public class Entry {
 	 // Create the application.
@@ -135,42 +138,6 @@ public class Entry {
 		JTextArea commentingArea = new JTextArea();
 		commentingArea.setBounds(56, 375, 171, 55);
 		contentBkg.add(commentingArea);
-	
-		// JComboBox for Food drop down menu.
-		JComboBox food = new JComboBox();
-		
-		food.setFont(new Font("Tahoma", Font.BOLD, 14));
-		food.setModel(new DefaultComboBoxModel(new String[] 
-				{	"Pho", "Fried rice"
-				}));
-		food.setSelectedIndex(-1);
-		food.setBounds(56, 319, 74, 30);
-		contentBkg.add(food);
-		
-		// JLabel for food decoration
-		JLabel textFood = new JLabel("Food"); 
-		textFood.setForeground(Color.WHITE);
-		textFood.setFont(new Font("Tahoma", Font.BOLD, 12));
-		textFood.setBounds(56, 302, 47, 14);
-		contentBkg.add(textFood);
-		
-		//JComboBox for Beverage drop down menu.
-		JComboBox beverage = new JComboBox();
-		beverage.setFont(new Font("Tahoma", Font.BOLD, 14));
-		beverage.setModel(new DefaultComboBoxModel(new String[] 
-				{
-					"Coffee", "Green teaa"
-				}));
-		beverage.setSelectedIndex(-1);
-		beverage.setBounds(153, 319, 74, 30);
-		contentBkg.add(beverage);
-		
-		//JLable for Beverage decoration.
-		JLabel textBeverage = new JLabel("Beverage"); 
-		textBeverage.setForeground(Color.WHITE);
-		textBeverage.setFont(new Font("Tahoma", Font.BOLD, 12));
-		textBeverage.setBounds(153, 300, 74, 19);
-		contentBkg.add(textBeverage);
 		
 		//JPanel for entirely content background decoration.
 		JPanel entireContentBkg = new JPanel();
@@ -203,44 +170,117 @@ public class Entry {
 		JTable table = new JTable();
 		table.setBorder(null);
 		table.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		DefaultTableModel model = new DefaultTableModel();
+		Object[] column = { "Order", "Name", "Phone", "Email", "Food", "Beverage", "Note"  };
+
+		String imagesDirectory = System.getProperty("user.dir") + "\\FinalProject\\images\\";
+		JLabel lblFoodLabel = new JLabel("");
+		lblFoodLabel.setBounds(284, 252, 218, 159);
+		entireContentBkg.add(lblFoodLabel);
+
+		JLabel lblBeverageLabel = new JLabel("");
+		lblBeverageLabel.setBounds(535, 252, 218, 159);
+		entireContentBkg.add(lblBeverageLabel);
+
+		// JComboBox for Food drop down menu.
+		JComboBox food = new JComboBox();
+
+		food.setFont(new Font("Tahoma", Font.BOLD, 14));
+		food.setModel(new DefaultComboBoxModel(new String[]
+				{	"Pho", "Fried rice"
+				}));
+		food.setSelectedIndex(-1);
+		food.setBounds(56, 319, 74, 30);
+		food.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				if (food.getSelectedItem().equals("Select Here"))
+				{
+					lblFoodLabel.setIcon(null);
+				}
+				else if (food.getSelectedItem().equals("Pho"))
+				{
+					ImageIcon picture = new ImageIcon(imagesDirectory + "pho.png");
+					lblFoodLabel.setIcon(picture);
+				}
+
+				else if (food.getSelectedItem().equals("Fried rice"))
+				{
+					ImageIcon picture1 = new ImageIcon(imagesDirectory + "friedrice.png");
+					lblFoodLabel.setIcon(picture1);
+				}
+			}
+		});
+		contentBkg.add(food);
+
+		// JLabel for food decoration
+		JLabel textFood = new JLabel("Food");
+		textFood.setForeground(Color.WHITE);
+		textFood.setFont(new Font("Tahoma", Font.BOLD, 12));
+		textFood.setBounds(56, 302, 47, 14);
+		contentBkg.add(textFood);
+
+		//JComboBox for Beverage drop down menu.
+		JComboBox beverage = new JComboBox();
+		beverage.setFont(new Font("Tahoma", Font.BOLD, 14));
+		beverage.setModel(new DefaultComboBoxModel(new String[]
+				{
+						"Coffee", "Green tea"
+				}));
+		beverage.setSelectedIndex(-1);
+		beverage.setBounds(153, 319, 74, 30);
+		beverage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				if (beverage.getSelectedItem().equals("Select Here"))
+				{
+					lblBeverageLabel.setIcon(null);
+				}
+				else if (beverage.getSelectedItem().equals("Green tea"))
+				{
+					ImageIcon picture = new ImageIcon(imagesDirectory + "teapot.png");
+					lblBeverageLabel.setIcon(picture);
+				}
+
+				else if (beverage.getSelectedItem().equals("Coffee"))
+				{
+					ImageIcon picture1 = new ImageIcon(imagesDirectory + "coffeecup.png");
+					lblBeverageLabel.setIcon(picture1);
+				}
+			}
+		});
+		contentBkg.add(beverage);
+
+		//JLable for Beverage decoration.
+		JLabel textBeverage = new JLabel("Beverage");
+		textBeverage.setForeground(Color.WHITE);
+		textBeverage.setFont(new Font("Tahoma", Font.BOLD, 12));
+		textBeverage.setBounds(153, 300, 74, 19);
+		contentBkg.add(textBeverage);
+
+		// Stated row number count
+		final Object[] row = new Object[7];
+		model.setColumnIdentifiers(column);
+		table.setModel(model);
+		scrollPane.setViewportView(table);
+
 		table.addMouseListener(new MouseAdapter() {
-			DefaultTableModel model;
-		
 			// Methods to select items to deleted Selected Table Items.
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				int willBeDeleted = table.getSelectedRow();
-			
-				orderNumber.setText(model.getValueAt(willBeDeleted, 0).toString());
-				name.setText(model.getValueAt(willBeDeleted, 1).toString());
-				phone.setText(model.getValueAt(willBeDeleted, 2).toString());
-				email.setText(model.getValueAt(willBeDeleted, 3).toString());
-				food.setSelectedItem(model.getValueAt(willBeDeleted, 4).toString());
-				beverage.setSelectedItem(model.getValueAt(willBeDeleted, 5).toString());
-				commentingArea.setText(model.getValueAt(willBeDeleted, 6).toString());
+				int selectedRow = table.getSelectedRow();
+				if (selectedRow >= 0) {
+					String order = model.getValueAt(selectedRow, 0).toString();
+					orderNumber.setText(order);
+					name.setText(model.getValueAt(selectedRow, 1).toString());
+					phone.setText(model.getValueAt(selectedRow, 2).toString());
+					email.setText(model.getValueAt(selectedRow, 3).toString());
+					food.setSelectedItem(model.getValueAt(selectedRow, 4).toString());
+					beverage.setSelectedItem(model.getValueAt(selectedRow, 5).toString());
+					commentingArea.setText(model.getValueAt(selectedRow, 6).toString());
+				}
 			}
 		});
-		
-		JButton btnLoadRecord = new JButton("Load Record");
-		btnLoadRecord.setBounds(255, 200, 102, 27);
-		btnLoadRecord.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				
-			}
-		});
-		btnLoadRecord.setFont(new Font("Tahoma", Font.BOLD, 10));
-		entireContentBkg.add(btnLoadRecord);
-		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setBounds(284, 252, 218, 159);
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\chane\\Documents\\Eclipse\\Finalproject\\images\\pho.png"));
-		entireContentBkg.add(lblNewLabel);
-		
-		JLabel lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setBounds(535, 252, 218, 159);
-		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\chane\\Documents\\Eclipse\\Finalproject\\images\\coffeecup.png"));
-		entireContentBkg.add(lblNewLabel_1);
 		
 		JLabel textFood_1 = new JLabel("Food");
 		textFood_1.setForeground(Color.WHITE);
@@ -279,20 +319,55 @@ public class Entry {
 		lblNote.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblNote.setBounds(56, 356, 56, 14);
 		contentBkg.add(lblNote);
-		DefaultTableModel model = new DefaultTableModel();
-		Object[] column = { "Order", "Name", "Phone", "Email", "Food", "Beverage", "Note"  };
-		
-		// Stated row number count
-		final Object[] row = new Object[7];
-		model.setColumnIdentifiers(column);
+
+		JButton btnLoadRecord = new JButton("Load Record");
+		btnLoadRecord.setBounds(255, 200, 102, 27);
+		btnLoadRecord.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// open the file
+				File fileName = null;
+				try {
+					fileName = new File(System.getProperty("user.dir") + "\\FinalProject\\RecordData.csv");
+					if (fileName.exists()) {
+						BufferedReader br = null;
+						String line = "";
+						String csvSplitBy = ",";
+
+						br = new BufferedReader(new FileReader(fileName));
+						while ((line = br.readLine()) != null) {
+							if (line.startsWith("#")) { // comment starts with #
+								continue;
+							}
+							String[] orderRecord = line.split(csvSplitBy);
+							if (orderRecord.length == 7) {
+								row[0] = orderRecord[0];
+								row[1] = orderRecord[1];
+								row[2] = orderRecord[2];
+								row[3] = orderRecord[3];
+								row[4] = orderRecord[4];
+								row[5] = orderRecord[5];
+								row[6] = orderRecord[6];
+								model.addRow(row);
+							}
+						}
+						br.close();
+						fileName = null;
+					}
+				} catch(FileNotFoundException notFoundException) {
+					JOptionPane.showMessageDialog(null, "The file " + fileName.getName() + " was not found");
+				} catch (IOException ioException) {
+					JOptionPane.showMessageDialog(null, ioException.getMessage());
+				}
+			}
+		});
+		btnLoadRecord.setFont(new Font("Tahoma", Font.BOLD, 10));
+		entireContentBkg.add(btnLoadRecord);
 		
 		// JButton for Add decoration and Action perform to it.
 		JButton Add = new JButton("Add");
 		Add.setFont(new Font("Tahoma", Font.BOLD, 10));
 		Add.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//System.out.println(food.getSelectedObjects().toString());
-				
 				if (orderNumber.getText().equals("") || name.getText().equals("") 
 						|| phone.getText().equals("") || email.getText().equals("") 
 						|| food.getSelectedIndex() == -1 || beverage.getSelectedIndex() == -1 
@@ -337,16 +412,16 @@ public class Entry {
 		update.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				int willBeDeleted = table.getSelectedRow();
-				if (willBeDeleted >= 0) 
+				int rowToUpdate = table.getSelectedRow();
+				if (rowToUpdate >= 0)
 				{
-					model.setValueAt(orderNumber.getText(), willBeDeleted, 0);
-					model.setValueAt(name.getText(), willBeDeleted, 1);
-					model.setValueAt(phone.getText(), willBeDeleted, 2);
-					model.setValueAt(email.getText(), willBeDeleted, 3);
-					model.setValueAt(food.getSelectedItem(), willBeDeleted, 4);
-					model.setValueAt(beverage.getSelectedItem(), willBeDeleted, 5);
-					model.setValueAt(commentingArea.getText(), willBeDeleted, 6);
+					model.setValueAt(orderNumber.getText(), rowToUpdate, 0);
+					model.setValueAt(name.getText(), rowToUpdate, 1);
+					model.setValueAt(phone.getText(), rowToUpdate, 2);
+					model.setValueAt(email.getText(), rowToUpdate, 3);
+					model.setValueAt(food.getSelectedItem(), rowToUpdate, 4);
+					model.setValueAt(beverage.getSelectedItem(), rowToUpdate, 5);
+					model.setValueAt(commentingArea.getText(), rowToUpdate, 6);
 					
 					// Inform user the update is successful.
 					JOptionPane.showMessageDialog(null, "Updated Successfully!");
