@@ -1,1 +1,3 @@
-Order #,Name,Phone,Email,Note
+# Order #,Name,Phone,Email,Food,Drink,Note
+1,John,0123456789,john@aber.de,Pho,Green tea,Deliver after 4pm
+2,Rick,0987654321,rick@morty.com,Fried rice,Coffee,With Szechuan Chicken McNugget Sauce
