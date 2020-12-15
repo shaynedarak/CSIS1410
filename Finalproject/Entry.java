@@ -1,4 +1,10 @@
 
+// Thongleup Boundarak
+// Data Entry Form
+// Version: 1.0
+// 2020
+
+
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -24,6 +30,7 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextArea;
 import javax.swing.table.TableModel;
+import java.awt.Toolkit;
 
 public class Entry {
 	 // Create the application.
@@ -36,6 +43,7 @@ public class Entry {
 		
 		// JFrame decoration
 		JFrame frame = new JFrame(); 
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\chane\\Documents\\Eclipse\\Finalproject\\images\\blackteapot.png"));
 		frame.getContentPane().setBackground(new Color(255, 255, 255));
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 800, 510);
@@ -45,7 +53,7 @@ public class Entry {
 		
 		 // JPanel Content background decoration.
 		JPanel contentBkg = new JPanel();
-		contentBkg.setBackground(new Color(102, 102, 102));
+		contentBkg.setBackground(new Color(107, 142, 35));
 		contentBkg.setBounds(0, 0, 245, 444);
 		frame.getContentPane().add(contentBkg);
 		contentBkg.setLayout(null);
@@ -100,24 +108,6 @@ public class Entry {
 		
 		// JTextField for phone number decoration
 		JTextField phone = new JTextField();
-		phone.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Scanner phoneFormat = new Scanner (System.in);
-				long phoneNumber;
-				long areaCode;
-				long preFix;
-				long lineNumber;
-				
-				phoneNumber = phoneFormat.nextLong();
-				
-				areaCode = phoneNumber / 10000000;
-				preFix = (phoneNumber / 10000) % 1000;
-				lineNumber = phoneNumber % 10000;
-				
-				System.out.println("(" + areaCode + ")" + " " + preFix + "-" +lineNumber);
-				
-			}
-		});
 		phone.setColumns(10);
 		phone.setBounds(56, 137, 171, 30);
 		contentBkg.add(phone);
@@ -136,7 +126,7 @@ public class Entry {
 		//JPanel for entirely content background decoration.
 		JPanel entireContentBkg = new JPanel();
 		entireContentBkg.setBorder(null);
-		entireContentBkg.setBackground(new Color(51, 51, 51));
+		entireContentBkg.setBackground(new Color(105, 105, 105));
 		entireContentBkg.setBounds(0, 0, 784, 471);
 		frame.getContentPane().add(entireContentBkg);
 		entireContentBkg.setLayout(null);
@@ -167,7 +157,7 @@ public class Entry {
 		DefaultTableModel model = new DefaultTableModel();
 		Object[] column = { "Order", "Name", "Phone", "Email", "Food", "Beverage", "Note"  };
 
-		String imagesDirectory = System.getProperty("user.dir") + "\\FinalProject\\images\\";
+		String imagesDirectory = System.getProperty("user.dir") + "\\images\\";
 		JLabel lblFoodLabel = new JLabel("");
 		lblFoodLabel.setBounds(284, 252, 218, 159);
 		entireContentBkg.add(lblFoodLabel);
@@ -321,7 +311,7 @@ public class Entry {
 				// open the file
 				File fileName = null;
 				try {
-					fileName = new File(System.getProperty("user.dir") + "\\FinalProject\\RecordData.csv");
+					fileName = new File(System.getProperty("user.dir") + "\\RecordData.csv");
 					if (fileName.exists()) {
 						BufferedReader br = null;
 						String line = "";
@@ -357,10 +347,22 @@ public class Entry {
 		btnLoadRecord.setFont(new Font("Tahoma", Font.BOLD, 10));
 		entireContentBkg.add(btnLoadRecord);
 		
+		JButton btnEntryHistory = new JButton("Entry History");
+		btnEntryHistory.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RecordTable EntryHistory = new RecordTable();
+				EntryHistory.setVisible();
+			}
+		});
+		btnEntryHistory.setFont(new Font("Tahoma", Font.BOLD, 10));
+		btnEntryHistory.setBounds(387, 200, 102, 27);
+		entireContentBkg.add(btnEntryHistory);
+		
 		// JButton for Add decoration and Action perform to it.
 		JButton Add = new JButton("Add");
 		Add.setFont(new Font("Tahoma", Font.BOLD, 10));
 		Add.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
 				if (orderNumber.getText().equals("") || name.getText().equals("") 
 						|| phone.getText().equals("") || email.getText().equals("") 
